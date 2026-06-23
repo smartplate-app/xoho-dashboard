@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xoho Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0f1117; --surface: #1a1d27; --card: #20243a; --border: #2e3347;
+    --text: #e8eaf6; --muted: #8b93b0;
+    --green: #4caf7d; --orange: #f59e0b; --red: #ef4444;
+    --blue: #6366f1; --accent: #a78bfa;
+  }
+  body { font-family: 'Segoe UI', 'Arial Hebrew', sans-serif; background: var(--bg); color: var(--text); direction: rtl; }
+
+  /* PAYWALL */
+  #paywall { position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000; }
+  .paywall-box { background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:40px 48px;text-align:center;max-width:380px;width:90%; }
+  .paywall-logo { font-size:2.2rem;font-weight:900;letter-spacing:-1px;margin-bottom:6px; }
+  .paywall-logo span { color:var(--accent); }
+  .paywall-sub { color:var(--muted);font-size:0.9rem;margin-bottom:28px; }
+  .paywall-input { width:100%;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;color:var(--text);font-size:1rem;text-align:center;letter-spacing:2px;outline:none;margin-bottom:12px;direction:ltr; }
+  .paywall-input:focus { border-color:var(--accent); }
+  .paywall-btn { width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:13px;font-size:1rem;font-weight:700;cursor:pointer; }
+  .paywall-btn:hover { opacity:0.85; }
+  .paywall-err { color:var(--red);font-size:0.85rem;min-height:20px;margin-top:8px; }
+
+  /* HEADER */
+  #main { display:none; }
+  .header { background:var(--surface);border-bottom:1px solid var(--border);padding:16px 28px;display:flex;align-items:center;justify-content:space-between; }
+  .logo { font-size:1.5rem;font-weight:900; }
+  .logo span { color:var(--accent); }
+  .header-meta { color:var(--muted);font-size:0.82rem;text-align:left;direction:ltr; }
+
+  /* TABS */
+  .tabs { display:flex;gap:4px;padding:16px 28px 0;border-bottom:1px solid var(--border);background:var(--surface); }
+  .tab { padding:9px 20px;border-radius:8px 8px 0 0;cursor:pointer;font-size:0.9rem;color:var(--muted);border:1px solid transparent;border-bottom:none;transition:all .2s; }
+  .tab.active { background:var(--bg);color:var(--text);border-color:var(--border);font-weight:600; }
+  .tab:hover:not(.active) { color:var(--text);background:rgba(255,255,255,.04); }
+
+  .page { display:none;padding:28px; }
+  .page.active { display:block; }
+
+  /* KPI */
+  .kpi-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-bottom:24px; }
+  .kpi { background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;position:relative;overflow:hidden; }
+  .kpi::before { content:'';position:absolute;top:0;right:0;width:4px;height:100%;border-radius:0 12px 12px 0; }
+  .kpi.blue::before { background:var(--blue); }
+  .kpi.green::before { background:var(--green); }
+  .kpi.orange::before { background:var(--orange); }
+  .kpi.purple::before { background:var(--accent); }
+  .kpi.teal::before { background:#2dd4bf; }
+  .kpi-label { font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px; }
+  .kpi-value { font-size:1.85rem;font-weight:800;line-height:1;margin-bottom:4px; }
+  .kpi-sub { font-size:0.8rem;color:var(--muted); }
+
+  /* PRIME */
+  .prime-section { background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:24px; }
+  .prime-title { font-size:0.82rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px; }
+  .prime-number { font-size:3.2rem;font-weight:900;text-align:center;margin:6px 0 10px; }
+  .prime-bar-wrap { background:var(--card);border-radius:8px;height:14px;overflow:hidden;margin-bottom:6px; }
+  .prime-bar { height:100%;border-radius:8px;transition:width .8s; }
+  .prime-labels { display:flex;justify-content:space-between;font-size:0.75rem;color:var(--muted);margin-bottom:12px; }
+  .prime-breakdown { display:flex;gap:32px;justify-content:center; }
+  .prime-item { text-align:center; }
+  .prime-item-val { font-size:1.3rem;font-weight:700; }
+  .prime-item-label { font-size:0.75rem;color:var(--muted);margin-top:2px; }
+
+  /* CHART */
+  .chart-section { background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:24px; }
+  .chart-title { font-size:0.9rem;font-weight:600;margin-bottom:16px; }
+
+  /* FOOD */
+  .food-note { background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.25);border-radius:10px;padding:14px 18px;font-size:0.85rem;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:10px; }
+  .food-input-section { background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:24px; }
+  .food-row { display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-top:14px; }
+  .food-field label { display:block;font-size:0.8rem;color:var(--muted);margin-bottom:5px; }
+  .food-field input { background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-size:1rem;width:200px;outline:none;direction:ltr; }
+  .food-field input:focus { border-color:var(--accent); }
+  .update-btn { background:var(--accent);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-weight:700;cursor:pointer;font-size:0.95rem; }
+  .update-btn:hover { opacity:.85; }
+  .last-upd { font-size:0.75rem;color:var(--muted);margin-top:6px; }
+
+  /* VENDOR TABLE */
+  .vtable { width:100%;border-collapse:collapse; }
+  .vtable th { text-align:right;padding:10px 14px;font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--border); }
+  .vtable td { padding:11px 14px;font-size:0.88rem;border-bottom:1px solid rgba(46,51,71,.5); }
+  .vtable tr:last-child td { border-bottom:none; }
+  .vtable tr:hover td { background:rgba(255,255,255,.02); }
+  .bar-cell { display:flex;align-items:center;gap:8px; }
+  .bar-mini { height:6px;border-radius:3px;background:var(--accent);opacity:.7; }
+</style>
+</head>
+<body>
+
+<!-- PAYWALL -->
+<div id="paywall">
+  <div class="paywall-box">
+    <div class="paywall-logo">X<span>oho</span></div>
+    <div class="paywall-sub">Dashboard · SmartPlate</div>
+    <input class="paywall-input" id="codeInput" type="password" placeholder="הזן קוד גישה" autocomplete="off">
+    <button class="paywall-btn" onclick="checkCode()">כניסה →</button>
+    <div class="paywall-err" id="codeErr"></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+  <div class="header">
+    <div class="logo">X<span>oho</span> <span style="font-size:.95rem;font-weight:400;color:var(--muted)">Dashboard</span></div>
+    <div class="header-meta">
+      <div id="hDate"></div>
+      <div id="hUpd"></div>
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('mtd')">יוני 2026 — MTD</div>
+    <div class="tab" onclick="showTab('food')">עלות מזון (MarketMan)</div>
+  </div>
+
+  <!-- MTD -->
+  <div class="page active" id="tab-mtd">
+    <div class="kpi-grid">
+      <div class="kpi blue">
+        <div class="kpi-label">מכירות ברוטו</div>
+        <div class="kpi-value" id="k-svat">—</div>
+        <div class="kpi-sub" id="k-days">— ימים</div>
+      </div>
+      <div class="kpi green">
+        <div class="kpi-label">מכירות נטו</div>
+        <div class="kpi-value" id="k-snet">—</div>
+        <div class="kpi-sub">÷ 1.18</div>
+      </div>
+      <div class="kpi orange">
+        <div class="kpi-label">שכר עבודה</div>
+        <div class="kpi-value" id="k-labor">—</div>
+        <div class="kpi-sub" id="k-lpct">—% נטו</div>
+      </div>
+      <div class="kpi purple">
+        <div class="kpi-label">עלות מזון (נטו)</div>
+        <div class="kpi-value" id="k-food">—</div>
+        <div class="kpi-sub" id="k-fpct">—</div>
+      </div>
+      <div class="kpi teal">
+        <div class="kpi-label">שעות עבודה</div>
+        <div class="kpi-value" id="k-hours">—</div>
+        <div class="kpi-sub">שעות חודש</div>
+      </div>
+    </div>
+
+    <div class="prime-section">
+      <div class="prime-title">⚡ Prime Cost = שכר + מזון &nbsp;|&nbsp; יעד: 60%</div>
+      <div class="prime-number" id="p-num">—</div>
+      <div class="prime-bar-wrap"><div class="prime-bar" id="p-bar" style="width:0"></div></div>
+      <div class="prime-labels"><span>0%</span><span style="color:var(--green)">60%✓</span><span>70%</span><span>80%</span><span>100%</span></div>
+      <div class="prime-breakdown">
+        <div class="prime-item"><div class="prime-item-val" id="pb-l">—</div><div class="prime-item-label">שכר %</div></div>
+        <div class="prime-item" style="color:var(--border);font-size:1.5rem;padding-bottom:6px">+</div>
+        <div class="prime-item"><div class="prime-item-val" id="pb-f">—</div><div class="prime-item-label">מזון %</div></div>
+        <div class="prime-item" style="color:var(--border);font-size:1.5rem;padding-bottom:6px">=</div>
+        <div class="prime-item"><div class="prime-item-val" id="pb-t">—</div><div class="prime-item-label">Prime Cost</div></div>
+      </div>
+    </div>
+
+    <div class="chart-section">
+      <div class="chart-title">מכירות יומיות — יוני 2026</div>
+      <canvas id="dailyChart" height="75"></canvas>
+    </div>
+  </div>
+
+  <!-- FOOD COST TAB -->
+  <div class="page" id="tab-food">
+    <div class="food-note">
+      <span>📦</span>
+      <div>עלות המזון נלקחת מ-MarketMan. הזן את הסכום הכולל מהדוח החודשי ואת פירוט הספקים (אופציונלי).</div>
+    </div>
+
+    <div class="food-input-section">
+      <div style="font-weight:600;font-size:1rem;margin-bottom:4px">עדכון עלות מזון חודשית</div>
+      <div class="last-upd" id="food-upd">לא עודכן עדיין</div>
+      <div class="food-row">
+        <div class="food-field">
+          <label>סה"כ ברוטו (₪) — MarketMan</label>
+          <input type="number" id="foodGross" placeholder="למשל: 85000" />
+        </div>
+        <button class="update-btn" onclick="updateFood()">✓ עדכן</button>
+      </div>
+      <div style="font-size:0.8rem;color:var(--muted);margin-top:10px">נטו = ÷ 1.17 (VAT של MarketMan) | % = נטו ÷ מכירות נטו</div>
+    </div>
+
+    <div class="chart-section">
+      <div class="chart-title">פירוט ספקים</div>
+      <table class="vtable">
+        <thead><tr><th>#</th><th>ספק</th><th style="text-align:left">ברוטו ₪</th><th style="text-align:left">% מסה"כ</th></tr></thead>
+        <tbody id="vbody"><tr><td colspan="4" style="text-align:center;color:var(--muted);padding:24px">הזן נתונים מ-MarketMan</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+const CODES = ["XOHO2026","SMARTPLATE","xoho2026"];
+
+// Tabit data — synced 23/06/2026
+const D = {
+  total_sales_vat: 424184,
+  total_sales_net: 359478,
+  days_collected: 19,
+  labor_cost: 145307,
+  labor_hours: 2420.5,
+  labor_pct: 40.4,
+  last_updated: "2026-06-23",
+  daily_sales: [
+    {date:"2026-06-01",amount:17583},{date:"2026-06-02",amount:19910},
+    {date:"2026-06-03",amount:19454},{date:"2026-06-04",amount:23792},
+    {date:"2026-06-05",amount:41572},{date:"2026-06-07",amount:20796},
+    {date:"2026-06-08",amount:15138},{date:"2026-06-09",amount:19932},
+    {date:"2026-06-10",amount:17726},{date:"2026-06-11",amount:21675},
+    {date:"2026-06-14",amount:20074},{date:"2026-06-15",amount:21021},
+    {date:"2026-06-16",amount:19469},{date:"2026-06-17",amount:23251},
+    {date:"2026-06-18",amount:20612},{date:"2026-06-19",amount:40659},
+    {date:"2026-06-21",amount:22772},{date:"2026-06-22",amount:23456},
+    {date:"2026-06-23",amount:15292}
+  ]
+};
+
+let foodGross = parseFloat(localStorage.getItem("xoho_fg")||"0");
+let foodUpd = localStorage.getItem("xoho_fu")||null;
+let vendors = JSON.parse(localStorage.getItem("xoho_vendors")||"[]");
+
+// Paywall
+function checkCode(){
+  const v=document.getElementById("codeInput").value.trim();
+  if(CODES.includes(v)){
+    localStorage.setItem("xoho_ok","1");
+    document.getElementById("paywall").style.display="none";
+    document.getElementById("main").style.display="block";
+    render();
+  } else {
+    document.getElementById("codeErr").textContent="קוד שגוי";
+    setTimeout(()=>document.getElementById("codeErr").textContent="",2000);
+  }
+}
+document.getElementById("codeInput").addEventListener("keydown",e=>{if(e.key==="Enter")checkCode();});
+if(localStorage.getItem("xoho_ok")==="1"){
+  document.getElementById("paywall").style.display="none";
+  document.getElementById("main").style.display="block";
+  setTimeout(render,50);
+}
+
+function showTab(id){
+  document.querySelectorAll(".tab").forEach((t,i)=>t.classList.toggle("active",["mtd","food"][i]===id));
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById("tab-"+id).classList.add("active");
+}
+
+function fmt(n){ return "₪"+Math.round(n).toLocaleString("he-IL"); }
+function pc(n){ return n.toFixed(1)+"%"; }
+function color(pct){ return pct<=60?"var(--green)":pct<=70?"var(--orange)":"var(--red)"; }
+
+function render(){
+  const foodNet = foodGross>0 ? Math.round(foodGross/1.17) : 0;
+  const foodPct = foodNet>0 ? Math.round(foodNet/D.total_sales_net*1000)/10 : 0;
+  const prime = D.labor_pct + foodPct;
+
+  document.getElementById("hDate").innerHTML = "<strong>יוני 2026</strong> | עד 23.6";
+  document.getElementById("hUpd").textContent = "Tabit: " + D.last_updated;
+
+  document.getElementById("k-svat").textContent = fmt(D.total_sales_vat);
+  document.getElementById("k-days").textContent = D.days_collected+" ימי נתונים";
+  document.getElementById("k-snet").textContent = fmt(D.total_sales_net);
+  document.getElementById("k-labor").textContent = fmt(D.labor_cost);
+  document.getElementById("k-lpct").textContent = pc(D.labor_pct)+" ממכירות נטו";
+  document.getElementById("k-hours").textContent = Math.round(D.labor_hours).toLocaleString()+" ש'";
+
+  if(foodNet>0){
+    document.getElementById("k-food").textContent = fmt(foodNet);
+    document.getElementById("k-fpct").textContent = pc(foodPct)+" ממכירות נטו";
+    document.getElementById("p-num").innerHTML = `<span style="color:${color(prime)}">${pc(prime)}</span>`;
+    document.getElementById("p-bar").style.cssText = `width:${Math.min(prime,100)}%;background:${color(prime)}`;
+    document.getElementById("pb-f").textContent = pc(foodPct);
+    document.getElementById("pb-f").style.color = "var(--accent)";
+    document.getElementById("pb-t").textContent = pc(prime);
+    document.getElementById("pb-t").style.color = color(prime);
+  } else {
+    document.getElementById("k-food").textContent = "—";
+    document.getElementById("k-fpct").textContent = "עדכן ב-MarketMan tab";
+    document.getElementById("p-num").innerHTML = `<span style="color:var(--muted);font-size:1.4rem">ממתין לנתון מזון</span>`;
+    document.getElementById("pb-f").textContent = "—";
+    document.getElementById("pb-t").textContent = "—";
+  }
+  document.getElementById("pb-l").textContent = pc(D.labor_pct);
+  document.getElementById("pb-l").style.color = "var(--orange)";
+
+  if(foodUpd) document.getElementById("food-upd").textContent = "עודכן: "+new Date(foodUpd).toLocaleString("he-IL");
+  if(foodGross>0) document.getElementById("foodGross").value = foodGross;
+
+  renderVendors(foodGross);
+  renderChart();
+}
+
+function renderVendors(totalGross){
+  const body = document.getElementById("vbody");
+  if(!vendors.length){
+    body.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:24px">אין פירוט ספקים — הוסף מ-MarketMan</td></tr>`;
+    return;
+  }
+  const max = Math.max(...vendors.map(v=>v.amount));
+  body.innerHTML = vendors.sort((a,b)=>b.amount-a.amount).map((v,i)=>{
+    const pct = totalGross>0 ? (v.amount/totalGross*100).toFixed(1) : "—";
+    const barW = Math.round(v.amount/max*120);
+    return `<tr>
+      <td style="color:var(--muted)">${i+1}</td>
+      <td>${v.name}</td>
+      <td style="direction:ltr;text-align:left">
+        <div class="bar-cell">
+          <div class="bar-mini" style="width:${barW}px"></div>
+          ${fmt(v.amount)}
+        </div>
+      </td>
+      <td style="direction:ltr;text-align:left;color:var(--muted)">${pct}%</td>
+    </tr>`;
+  }).join("");
+}
+
+let chartInst = null;
+function renderChart(){
+  const daily = D.daily_sales;
+  const labels = daily.map(d=>d.date.slice(8)+"/"+d.date.slice(5,7));
+  const vals = daily.map(d=>d.amount);
+  const avg = vals.reduce((a,b)=>a+b,0)/vals.length;
+  const ctx = document.getElementById("dailyChart").getContext("2d");
+  if(chartInst) chartInst.destroy();
+  chartInst = new Chart(ctx,{
+    type:"bar",
+    data:{
+      labels,
+      datasets:[{
+        data:vals,
+        backgroundColor:vals.map(v=>v>=35000?"rgba(167,139,250,0.85)":"rgba(99,102,241,0.6)"),
+        borderWidth:0,
+        borderRadius:4
+      },{
+        type:"line",
+        data:vals.map(()=>avg),
+        borderColor:"rgba(76,175,125,0.7)",
+        borderWidth:2,
+        borderDash:[5,4],
+        pointRadius:0,
+        fill:false
+      }]
+    },
+    options:{
+      responsive:true,
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{label:c=>"₪"+Math.round(c.raw).toLocaleString("he-IL")}}
+      },
+      scales:{
+        x:{ticks:{color:"#8b93b0",font:{size:11}},grid:{color:"rgba(46,51,71,0.5)"}},
+        y:{ticks:{color:"#8b93b0",font:{size:11},callback:v=>"₪"+(v/1000).toFixed(0)+"K"},grid:{color:"rgba(46,51,71,0.5)"}}
+      }
+    }
+  });
+}
+
+function updateFood(){
+  const v = parseFloat(document.getElementById("foodGross").value);
+  if(!v||v<=0){alert("הזן סכום תקין");return;}
+  foodGross=v;
+  foodUpd=new Date().toISOString();
+  localStorage.setItem("xoho_fg",foodGross);
+  localStorage.setItem("xoho_fu",foodUpd);
+  render();
+  alert("✅ עלות מזון עודכנה!");
+}
+</script>
+</body>
+</html>
