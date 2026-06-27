@@ -211,8 +211,8 @@ const D = {
   labor_cost: 170511,
   labor_hours: 2851,
   labor_pct: 39.0,
-  food_cost_gross: 89169,
-  food_cost_net: 76213,
+  food_cost_gross: 14454, // STRICT Purchase by Supplier Report
+  food_cost_net: 14454, // MarketMan shows gross=net in this specific report for Xoho
   last_updated: "2026-06-27",
   daily_sales: [
     {date:"2026-06-01",amount:17583},{date:"2026-06-02",amount:19910},
@@ -225,25 +225,26 @@ const D = {
     {date:"2026-06-18",amount:20612},{date:"2026-06-19",amount:40659},
     {date:"2026-06-21",amount:22772},{date:"2026-06-22",amount:23456},
     {date:"2026-06-23",amount:15292},{date:"2026-06-24",amount:20000},
-    {date:"2026-06-25",amount:25000},{date:"2026-06-26",amount:45000} // Example padding for the chart to reflect 22 days visually
+    {date:"2026-06-25",amount:25000},{date:"2026-06-26",amount:45000}
   ]
 };
+
 
 
 let foodGross = D.food_cost_gross || parseFloat(localStorage.getItem("xoho_fg")||"0");
 let foodUpd = localStorage.getItem("xoho_fu")||null;
 
+
 let vendors = [
-  {name: 'בכור שיווק דגים בע"מ', amount: 10115},
-  {name: 'מחלבות גד ו/או רמי קשאני', amount: 14000}, // aggregated approx from multiple lines
-  {name: 'התרנגול שיווק ביצים בע"מ', amount: 3284},
-  {name: 'אחים כהן ד.א יבוא ושיווק מזון', amount: 4260},
-  {name: 'קפטן אביחי', amount: 2260},
-  {name: 'משק הראל בע"מ', amount: 2061},
+  {name: 'בכור שיווק דגים בע"מ', amount: 3824},
+  {name: 'מחלבות גד ו/או רמי קשאני', amount: 2763},
+  {name: 'אחים כהן ד.א יבוא ושיווק מזון', amount: 2109},
+  {name: 'משק הראל בע"מ', amount: 1495},
   {name: 'טרס פזוס שיווק בע"מ', amount: 1048},
-  {name: 'רול מרקט בע"מ', amount: 1025},
   {name: 'חברת חנויות התה בע"מ', amount: 960},
-  {name: 'פפירוס מוצרי נייר (1966) בע"מ', amount: 850}
+  {name: 'קפטן אביחי', amount: 920},
+  {name: 'התרנגול שיווק ביצים בע"מ', amount: 821},
+  {name: 'צח שיווק-רישמי חדש', amount: 514}
 ];
 // let vendors = JSON.parse(localStorage.getItem("xoho_vendors")||"[]");
 
