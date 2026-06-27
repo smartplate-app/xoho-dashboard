@@ -211,8 +211,10 @@ const D = {
   labor_cost: 170511,
   labor_hours: 2851,
   labor_pct: 39.0,
-  food_cost_gross: 14454, // STRICT Purchase by Supplier Report
-  food_cost_net: 14454, // MarketMan shows gross=net in this specific report for Xoho
+  food_cost_gross: 89169, // All Orders
+  food_cost_net: 76213,   // All Orders Net (89169 / 1.17)
+  food_cost_approved_gross: 14454, // Approved Invoices Only
+  food_cost_approved_net: 14454,   // Approved Invoices Only
   last_updated: "2026-06-27",
   daily_sales: [
     {date:"2026-06-01",amount:17583},{date:"2026-06-02",amount:19910},
@@ -231,20 +233,28 @@ const D = {
 
 
 
+
 let foodGross = D.food_cost_gross || parseFloat(localStorage.getItem("xoho_fg")||"0");
 let foodUpd = localStorage.getItem("xoho_fu")||null;
 
 
+
 let vendors = [
-  {name: 'בכור שיווק דגים בע"מ', amount: 3824},
-  {name: 'מחלבות גד ו/או רמי קשאני', amount: 2763},
-  {name: 'אחים כהן ד.א יבוא ושיווק מזון', amount: 2109},
-  {name: 'משק הראל בע"מ', amount: 1495},
-  {name: 'טרס פזוס שיווק בע"מ', amount: 1048},
-  {name: 'חברת חנויות התה בע"מ', amount: 960},
-  {name: 'קפטן אביחי', amount: 920},
-  {name: 'התרנגול שיווק ביצים בע"מ', amount: 821},
-  {name: 'צח שיווק-רישמי חדש', amount: 514}
+  {name: 'אחים כהן ד.א יבוא ושיווק מזון', ordered: 14059, approved: 2109},
+  {name: 'בכור שיווק דגים בע"מ', ordered: 13345, approved: 3824},
+  {name: 'מחלבות גד ו/או רמי קשאני', ordered: 13151, approved: 2763},
+  {name: 'משק הראל בע"מ', ordered: 11042, approved: 1495},
+  {name: 'תפוז טרי בע"מ', ordered: 8833, approved: 0},
+  {name: 'רול מרקט בע"מ', ordered: 7559, approved: 0},
+  {name: 'Brewkva', ordered: 6229, approved: 0},
+  {name: 'קפטן אביחי', ordered: 3710, approved: 920},
+  {name: 'התרנגול שיווק ביצים בע"מ', ordered: 3558, approved: 821},
+  {name: 'המרכז לבירה ביתית', ordered: 2025, approved: 0},
+  {name: 'חברת חנויות התה בע"מ', ordered: 1370, approved: 960},
+  {name: 'פפירוס מוצרי נייר (1966) בע"מ', ordered: 1338, approved: 0},
+  {name: 'טרס פזוס שיווק בע"מ', ordered: 1049, approved: 1048},
+  {name: 'צח שיווק-רישמי חדש', ordered: 1002, approved: 514},
+  {name: 'סבתאשלי תמצית מייפל', ordered: 900, approved: 0}
 ];
 // let vendors = JSON.parse(localStorage.getItem("xoho_vendors")||"[]");
 
@@ -294,15 +304,22 @@ function render(){
   document.getElementById("k-lpct").textContent = pc(D.labor_pct)+" ממכירות נטו";
   document.getElementById("k-hours").textContent = Math.round(D.labor_hours).toLocaleString()+" ש'";
 
-  if(foodNet>0){
-    document.getElementById("k-food").textContent = fmt(foodNet);
-    document.getElementById("k-fpct").textContent = pc(foodPct)+" ממכירות נטו";
+  
+  if(D.food_cost_gross > 0){
+    const pctOrd = (D.food_cost_net / D.total_sales_net * 100).toFixed(1);
+    const pctApp = (D.food_cost_approved_net / D.total_sales_net * 100).toFixed(1);
+    
+    document.getElementById("k-food").innerHTML = `<div style="font-size:1.1rem">סה"כ הוזמן: ${fmt(D.food_cost_net)}</div><div style="font-size:1.1rem;color:var(--green);margin-top:4px">אושר: ${fmt(D.food_cost_approved_net)}</div>`;
+    document.getElementById("k-fpct").innerHTML = `הוזמן: ${pctOrd}% | אושר: <span style="color:var(--green)">${pctApp}%</span>`;
+    
+    const prime = D.labor_pct + parseFloat(pctOrd);
     document.getElementById("p-num").innerHTML = `<span style="color:${color(prime)}">${pc(prime)}</span>`;
     document.getElementById("p-bar").style.cssText = `width:${Math.min(prime,100)}%;background:${color(prime)}`;
-    document.getElementById("pb-f").textContent = pc(foodPct);
+    document.getElementById("pb-f").textContent = pctOrd + "%";
     document.getElementById("pb-f").style.color = "var(--accent)";
     document.getElementById("pb-t").textContent = pc(prime);
     document.getElementById("pb-t").style.color = color(prime);
+  } else {
   } else {
     document.getElementById("k-food").textContent = "—";
     document.getElementById("k-fpct").textContent = "עדכן ב-MarketMan tab";
@@ -316,16 +333,35 @@ function render(){
   if(foodUpd) document.getElementById("food-upd").textContent = "עודכן: "+new Date(foodUpd).toLocaleString("he-IL");
   if(foodGross>0) document.getElementById("foodGross").value = foodGross;
 
-  renderVendors(foodGross);
+  renderVendors();
   renderChart();
 }
 
-function renderVendors(totalGross){
+
+function renderVendors(){
   const body = document.getElementById("vbody");
   if(!vendors.length){
-    body.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:24px">אין פירוט ספקים — הוסף מ-MarketMan</td></tr>`;
+    body.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">אין פירוט ספקים</td></tr>';
     return;
   }
+  
+  // Re-write the table headers
+  document.querySelector(".vtable thead tr").innerHTML = '<th>#</th><th>ספק</th><th style="text-align:left">הוזמן (ברוטו)</th><th style="text-align:left">אושר (ברוטו)</th><th style="text-align:left">הפרש לא מאושר</th>';
+  
+  let h = "";
+  vendors.forEach((v,i)=>{
+    const diff = v.ordered - v.approved;
+    const diffSpan = diff > 0 ? '<span style="color:var(--orange)">'+fmt(diff)+'</span>' : '<span style="color:var(--muted)">0</span>';
+    h += '<tr>';
+    h += '<td style="color:var(--muted)">'+(i+1)+'</td>';
+    h += '<td><div style="font-weight:600;margin-bottom:4px">'+v.name+'</div></td>';
+    h += '<td style="text-align:left">'+fmt(v.ordered)+'</td>';
+    h += '<td style="text-align:left;color:var(--green)">'+fmt(v.approved)+'</td>';
+    h += '<td style="text-align:left">'+diffSpan+'</td>';
+    h += '</tr>';
+  });
+  body.innerHTML = h;
+}
   const max = Math.max(...vendors.map(v=>v.amount));
   body.innerHTML = vendors.sort((a,b)=>b.amount-a.amount).map((v,i)=>{
     const pct = totalGross>0 ? (v.amount/totalGross*100).toFixed(1) : "—";
