@@ -168,6 +168,52 @@
       <div class="chart-title">מכירות יומיות — יוני 2026</div>
       <canvas id="dailyChart" height="75"></canvas>
     </div>
+
+    <!-- HISTORICAL SALES COMPARISON -->
+    <div class="chart-section" style="margin-top: 24px;">
+      <div class="chart-title">השוואת מכירות רבעונית (מרץ - מאי) — 2024-2026</div>
+      <p style="color:var(--muted); font-size:0.85rem; margin-top:-10px; margin-bottom:16px;">
+        השוואת מכירות ברוטו (כולל מע"מ) ל-3 החודשים האחרונים המלאים מול השנים הקודמות.
+      </p>
+      
+      <div style="width:100%; max-height:250px; margin-bottom:24px;">
+        <canvas id="historyChart" height="75"></canvas>
+      </div>
+
+      <div style="overflow-x:auto;">
+        <table class="vtable">
+          <thead>
+            <tr>
+              <th>חודש</th>
+              <th style="text-align:left">2024</th>
+              <th style="text-align:left">2025</th>
+              <th style="text-align:left">2026</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div style="font-weight:600">מרץ</div></td>
+              <td style="text-align:left">₪671,403</td>
+              <td style="text-align:left;color:var(--green)">₪886,004</td>
+              <td style="text-align:left;color:var(--orange)">₪363,411</td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:600">אפריל</div></td>
+              <td style="text-align:left">₪471,753</td>
+              <td style="text-align:left;color:var(--green)">₪715,576</td>
+              <td style="text-align:left;color:var(--orange)">₪355,318</td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:600">מאי</div></td>
+              <td style="text-align:left">₪734,816</td>
+              <td style="text-align:left;color:var(--green)">₪971,940</td>
+              <td style="text-align:left;color:var(--orange)">₪565,873</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
 
   <!-- FOOD COST TAB -->
@@ -357,7 +403,74 @@ function render(){
 
   renderVendors();
   renderChart();
+  renderHistoryChart();
 }
+
+
+function renderHistoryChart() {
+  const ctx = document.getElementById("historyChart").getContext("2d");
+  
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: ["מרץ", "אפריל", "מאי"],
+      datasets: [
+        {
+          label: "2024",
+          data: [671403, 471753, 734816],
+          backgroundColor: "rgba(100, 116, 139, 0.6)",
+          borderRadius: 4
+        },
+        {
+          label: "2025",
+          data: [886004, 715576, 971940],
+          backgroundColor: "rgba(76, 175, 80, 0.7)", // Greenish for high
+          borderRadius: 4
+        },
+        {
+          label: "2026",
+          data: [363411, 355318, 565873],
+          backgroundColor: "rgba(245, 158, 11, 0.8)", // Orange for current drop
+          borderRadius: 4
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: true,
+          position: "top",
+          labels: { color: "#94a3b8", font: { family: "Heebo" } }
+        },
+        tooltip: {
+          titleFont: { family: "Heebo", size: 14 },
+          bodyFont: { family: "Heebo", size: 13 },
+          callbacks: {
+            label: function(ctx) {
+              return " " + ctx.dataset.label + ": ₪" + ctx.raw.toLocaleString();
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          grid: { color: "rgba(255,255,255,0.05)" },
+          ticks: { 
+            color: "#94a3b8",
+            callback: function(value) { return "₪" + (value/1000) + "k"; }
+          }
+        },
+        x: {
+          grid: { display: false },
+          ticks: { color: "#94a3b8", font: { family: "Heebo" } }
+        }
+      }
+    }
+  });
+}
+
 
 
 function renderVendors(){
