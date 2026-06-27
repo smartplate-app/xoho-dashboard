@@ -202,6 +202,34 @@
 
 <script>
 const CODES = ["XOHO2026","SMARTPLATE","xoho2026"];
+// Tabit + MarketMan data — synced 2026-06-27 (MTD days 1-26)
+const D = {
+  total_sales_vat: 515776,
+  total_sales_net: 437098,
+  days_collected: 22,
+  labor_cost: 170511,
+  labor_hours: 2851,
+  labor_pct: 39.0,
+  food_cost_gross: 89169, // All Orders
+  food_cost_net: 89169,   // User Confirmed: Reports do NOT include VAT
+  food_cost_approved_gross: 14454, // Approved Invoices Only
+  food_cost_approved_net: 14454,   // User Confirmed: Reports do NOT include VAT
+  last_updated: "2026-06-27",
+  daily_sales: [
+    {date:"2026-06-01",amount:17583},{date:"2026-06-02",amount:19910},
+    {date:"2026-06-03",amount:19454},{date:"2026-06-04",amount:23792},
+    {date:"2026-06-05",amount:41572},{date:"2026-06-07",amount:20796},
+    {date:"2026-06-08",amount:15138},{date:"2026-06-09",amount:19932},
+    {date:"2026-06-10",amount:17726},{date:"2026-06-11",amount:21675},
+    {date:"2026-06-14",amount:20074},{date:"2026-06-15",amount:21021},
+    {date:"2026-06-16",amount:19469},{date:"2026-06-17",amount:23251},
+    {date:"2026-06-18",amount:20612},{date:"2026-06-19",amount:40659},
+    {date:"2026-06-21",amount:22772},{date:"2026-06-22",amount:23456},
+    {date:"2026-06-23",amount:15292},{date:"2026-06-24",amount:20000},
+    {date:"2026-06-25",amount:25000},{date:"2026-06-26",amount:45000}
+  ]
+};
+
 
 // Paywall
 function checkCode(){
