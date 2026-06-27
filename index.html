@@ -187,7 +187,7 @@
         </div>
         <button class="update-btn" onclick="updateFood()">✓ עדכן</button>
       </div>
-      <div style="font-size:0.8rem;color:var(--muted);margin-top:10px">נטו = ÷ 1.17 (VAT של MarketMan) | % = נטו ÷ מכירות נטו</div>
+      <div style="font-size:0.8rem;color:var(--muted);margin-top:10px">הסכומים ממערכת מרקטמן הם ללא מע"מ במקור (נטו) | % = נטו ÷ מכירות נטו</div>
     </div>
 
     <div class="chart-section">
@@ -296,7 +296,7 @@ function pc(n){ return n.toFixed(1)+"%"; }
 function color(pct){ return pct<=60?"var(--green)":pct<=70?"var(--orange)":"var(--red)"; }
 
 function render(){
-  const foodNet = foodGross>0 ? Math.round(foodGross/1.17) : 0;
+  const foodNet = foodGross>0 ? Math.round(foodGross) : 0;
   const foodPct = foodNet>0 ? Math.round(foodNet/D.total_sales_net*1000)/10 : 0;
   const prime = D.labor_pct + foodPct;
 
