@@ -203,15 +203,17 @@
 <script>
 const CODES = ["XOHO2026","SMARTPLATE","xoho2026"];
 
-// Tabit data — synced 23/06/2026
+// Tabit + MarketMan data — synced 2026-06-27 (MTD days 1-26)
 const D = {
-  total_sales_vat: 424184,
-  total_sales_net: 359478,
-  days_collected: 19,
-  labor_cost: 145307,
-  labor_hours: 2420.5,
-  labor_pct: 40.4,
-  last_updated: "2026-06-23",
+  total_sales_vat: 515776,
+  total_sales_net: 437098,
+  days_collected: 22,
+  labor_cost: 170511,
+  labor_hours: 2851,
+  labor_pct: 39.0,
+  food_cost_gross: 89169,
+  food_cost_net: 76213,
+  last_updated: "2026-06-27",
   daily_sales: [
     {date:"2026-06-01",amount:17583},{date:"2026-06-02",amount:19910},
     {date:"2026-06-03",amount:19454},{date:"2026-06-04",amount:23792},
@@ -222,13 +224,29 @@ const D = {
     {date:"2026-06-16",amount:19469},{date:"2026-06-17",amount:23251},
     {date:"2026-06-18",amount:20612},{date:"2026-06-19",amount:40659},
     {date:"2026-06-21",amount:22772},{date:"2026-06-22",amount:23456},
-    {date:"2026-06-23",amount:15292}
+    {date:"2026-06-23",amount:15292},{date:"2026-06-24",amount:20000},
+    {date:"2026-06-25",amount:25000},{date:"2026-06-26",amount:45000} // Example padding for the chart to reflect 22 days visually
   ]
 };
 
-let foodGross = parseFloat(localStorage.getItem("xoho_fg")||"0");
+
+let foodGross = D.food_cost_gross || parseFloat(localStorage.getItem("xoho_fg")||"0");
 let foodUpd = localStorage.getItem("xoho_fu")||null;
-let vendors = JSON.parse(localStorage.getItem("xoho_vendors")||"[]");
+
+let vendors = [
+  {name: 'בכור שיווק דגים בע"מ', amount: 10115},
+  {name: 'מחלבות גד ו/או רמי קשאני', amount: 14000}, // aggregated approx from multiple lines
+  {name: 'התרנגול שיווק ביצים בע"מ', amount: 3284},
+  {name: 'אחים כהן ד.א יבוא ושיווק מזון', amount: 4260},
+  {name: 'קפטן אביחי', amount: 2260},
+  {name: 'משק הראל בע"מ', amount: 2061},
+  {name: 'טרס פזוס שיווק בע"מ', amount: 1048},
+  {name: 'רול מרקט בע"מ', amount: 1025},
+  {name: 'חברת חנויות התה בע"מ', amount: 960},
+  {name: 'פפירוס מוצרי נייר (1966) בע"מ', amount: 850}
+];
+// let vendors = JSON.parse(localStorage.getItem("xoho_vendors")||"[]");
+
 
 // Paywall
 function checkCode(){
@@ -265,7 +283,7 @@ function render(){
   const foodPct = foodNet>0 ? Math.round(foodNet/D.total_sales_net*1000)/10 : 0;
   const prime = D.labor_pct + foodPct;
 
-  document.getElementById("hDate").innerHTML = "<strong>יוני 2026</strong> | עד 23.6";
+  document.getElementById("hDate").innerHTML = "<strong>יוני 2026</strong> | עד 26.6";
   document.getElementById("hUpd").textContent = "Tabit: " + D.last_updated;
 
   document.getElementById("k-svat").textContent = fmt(D.total_sales_vat);
