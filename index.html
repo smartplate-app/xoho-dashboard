@@ -359,28 +359,57 @@ function render(){
 function renderVendors(){
   const body = document.getElementById("vbody");
   if(!vendors.length){
-    body.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px">אין פירוט ספקים</td></tr>';
+    body.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">אין פירוט ספקים</td></tr>';
     return;
   }
   
   // Re-write the table headers
-  document.querySelector(".vtable thead tr").innerHTML = '<th>#</th><th>ספק</th><th style="text-align:left">הוזמן (ברוטו)</th><th style="text-align:left">אושר (ברוטו)</th><th style="text-align:left">הפרש לא מאושר</th>';
+  document.querySelector(".vtable thead tr").innerHTML = '<th>#</th><th>ספק</th><th style="text-align:left">הוזמן (נטו)</th><th style="text-align:left">אושר (נטו)</th><th style="text-align:left">הפרש (נטו)</th><th style="text-align:left">% הפרש</th>';
   
   let h = "";
+  let totalOrd = 0;
+  let totalApp = 0;
+  
   vendors.forEach((v,i)=>{
+    totalOrd += v.ordered;
+    totalApp += v.approved;
+    
     const diff = v.ordered - v.approved;
     const diffSpan = diff > 0 ? '<span style="color:var(--orange)">'+fmt(diff)+'</span>' : '<span style="color:var(--muted)">0</span>';
+    
+    let diffPct = 0;
+    if(v.ordered > 0) {
+      diffPct = (diff / v.ordered) * 100;
+    }
+    const pctSpan = diff > 0 ? '<span style="color:var(--orange)">'+diffPct.toFixed(1)+'%</span>' : '<span style="color:var(--muted)">0%</span>';
+
     h += '<tr>';
     h += '<td style="color:var(--muted)">'+(i+1)+'</td>';
     h += '<td><div style="font-weight:600;margin-bottom:4px">'+v.name+'</div></td>';
     h += '<td style="text-align:left">'+fmt(v.ordered)+'</td>';
     h += '<td style="text-align:left;color:var(--green)">'+fmt(v.approved)+'</td>';
     h += '<td style="text-align:left">'+diffSpan+'</td>';
+    h += '<td style="text-align:left">'+pctSpan+'</td>';
     h += '</tr>';
   });
+  
+  // ADD TOTAL ROW
+  const totalDiff = totalOrd - totalApp;
+  const totalDiffPct = totalOrd > 0 ? (totalDiff / totalOrd) * 100 : 0;
+  const totalDiffSpan = totalDiff > 0 ? '<span style="color:var(--orange)">'+fmt(totalDiff)+'</span>' : '<span style="color:var(--muted)">0</span>';
+  const totalPctSpan = totalDiff > 0 ? '<span style="color:var(--orange)">'+totalDiffPct.toFixed(1)+'%</span>' : '<span style="color:var(--muted)">0%</span>';
+
+  h += '<tr style="border-top:2px solid var(--border); background:rgba(255,255,255,0.03); font-weight:bold;">';
+  h += '<td></td>';
+  h += '<td>סה"כ (ללא מע"מ)</td>';
+  h += '<td style="text-align:left">'+fmt(totalOrd)+'</td>';
+  h += '<td style="text-align:left;color:var(--green)">'+fmt(totalApp)+'</td>';
+  h += '<td style="text-align:left">'+totalDiffSpan+'</td>';
+  h += '<td style="text-align:left">'+totalPctSpan+'</td>';
+  h += '</tr>';
+  
   body.innerHTML = h;
 }
-
 
 let chartInst = null;
 function renderChart(){
