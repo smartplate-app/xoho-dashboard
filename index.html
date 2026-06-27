@@ -236,20 +236,24 @@ let foodGross = D.food_cost_gross || parseFloat(localStorage.getItem("xoho_fg")|
 let foodUpd = localStorage.getItem("xoho_fu")||null;
 
 let vendors = [
-  {name: 'אחים כהן ד.א יבוא ושיווק מזון', ordered: 14059, approved: 2109},
-  {name: 'בכור שיווק דגים בע"מ', ordered: 13345, approved: 3824},
-  {name: 'מחלבות גד ו/או רמי קשאני', ordered: 13151, approved: 2763},
-  {name: 'משק הראל בע"מ', ordered: 11042, approved: 1495},
+  {name: 'אחים כהן ד.א יבוא ושיווק מזון', ordered: 14059, approved: 13581},
+  {name: 'בכור שיווק דגים בע"מ', ordered: 13345, approved: 10899},
+  {name: 'מחלבות גד ו/או רמי קשאני', ordered: 13151, approved: 15164},
+  {name: 'משק הראל בע"מ', ordered: 11042, approved: 6032},
   {name: 'תפוז טרי בע"מ', ordered: 8833, approved: 0},
-  {name: 'טופ פרוט סוכנויות (2012) בע"מ', ordered: 6736, approved: 1111},
+  {name: 'טופ פרוט סוכנויות (2012) בע"מ', ordered: 6736, approved: 0},
   {name: 'א.ד.ש. שיווק דגי איכות בע"מ', ordered: 6516, approved: 0},
+  {name: 'רול מרקט בע"מ', ordered: 0, approved: 5225},
+  {name: 'התרנגול שיווק ביצים בע"מ', ordered: 0, approved: 3285},
   {name: 'נייטשר נט 2011 בע"מ', ordered: 2955, approved: 0},
-  {name: 'מר קייק-שיווק וסחר חומרי גלם לאפי', ordered: 2774, approved: 588},
+  {name: 'מר קייק-שיווק וסחר חומרי גלם לאפי', ordered: 2774, approved: 0},
+  {name: 'קפטן אביחי', ordered: 0, approved: 2720},
   {name: 'עלים ירוקים י.א.(2000) בע"מ', ordered: 2516, approved: 0},
-  {name: 'ד.א פרמיום קופי בע"מ Mae', ordered: 1850, approved: 1002},
-  {name: 'פפירוס מוצרי נייר (1966) בע"מ', ordered: 1338, approved: 0},
+  {name: 'ד.א פרמיום קופי בע"מ Mae', ordered: 1850, approved: 0},
+  {name: 'פפירוס מוצרי נייר (1966) בע"מ', ordered: 1338, approved: 1338},
   {name: 'טרס פזוס שיווק בע"מ', ordered: 1049, approved: 1048},
-  {name: 'צח שיווק-רישמי חדש', ordered: 1002, approved: 514},
+  {name: 'צח שיווק-רישמי חדש', ordered: 1002, approved: 764},
+  {name: 'חברת חנויות התה בע"מ', ordered: 0, approved: 960},
   {name: 'סבתאשלי תמצית מייפל', ordered: 900, approved: 0}
 ];
 
