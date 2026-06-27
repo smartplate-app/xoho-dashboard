@@ -266,7 +266,6 @@ function render(){
     document.getElementById("pb-t").textContent = pc(prime);
     document.getElementById("pb-t").style.color = color(prime);
   } else {
-  } else {
     document.getElementById("k-food").textContent = "—";
     document.getElementById("k-fpct").textContent = "עדכן ב-MarketMan tab";
     document.getElementById("p-num").innerHTML = `<span style="color:var(--muted);font-size:1.4rem">ממתין לנתון מזון</span>`;
@@ -308,23 +307,7 @@ function renderVendors(){
   });
   body.innerHTML = h;
 }
-  const max = Math.max(...vendors.map(v=>v.amount));
-  body.innerHTML = vendors.sort((a,b)=>b.amount-a.amount).map((v,i)=>{
-    const pct = totalGross>0 ? (v.amount/totalGross*100).toFixed(1) : "—";
-    const barW = Math.round(v.amount/max*120);
-    return `<tr>
-      <td style="color:var(--muted)">${i+1}</td>
-      <td>${v.name}</td>
-      <td style="direction:ltr;text-align:left">
-        <div class="bar-cell">
-          <div class="bar-mini" style="width:${barW}px"></div>
-          ${fmt(v.amount)}
-        </div>
-      </td>
-      <td style="direction:ltr;text-align:left;color:var(--muted)">${pct}%</td>
-    </tr>`;
-  }).join("");
-}
+
 
 let chartInst = null;
 function renderChart(){
