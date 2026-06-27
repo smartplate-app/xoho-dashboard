@@ -100,7 +100,7 @@
   <div class="paywall-box">
     <div class="paywall-logo">X<span>oho</span></div>
     <div class="paywall-sub">Dashboard · SmartPlate</div>
-    <input class="paywall-input" id="codeInput" type="password" placeholder="הזן קוד גישה" autocomplete="off">
+    <div style="position:relative; width: 100%; max-width: 320px; margin: 0 auto; margin-bottom: 24px;"><input class="paywall-input" id="codeInput" type="password" placeholder="הזן קוד גישה" autocomplete="off" style="width: 100%; padding-left: 45px; box-sizing: border-box; margin-bottom: 0;"><button type="button" onclick="togglePassword()" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--muted); outline: none;">👁️</button></div>
     <button class="paywall-btn" onclick="checkCode()">כניסה →</button>
     <div class="paywall-err" id="codeErr"></div>
   </div>
@@ -230,6 +230,38 @@ const D = {
   ]
 };
 
+
+
+let foodGross = D.food_cost_gross || parseFloat(localStorage.getItem("xoho_fg")||"0");
+let foodUpd = localStorage.getItem("xoho_fu")||null;
+
+let vendors = [
+  {name: 'אחים כהן ד.א יבוא ושיווק מזון', ordered: 14059, approved: 2109},
+  {name: 'בכור שיווק דגים בע"מ', ordered: 13345, approved: 3824},
+  {name: 'מחלבות גד ו/או רמי קשאני', ordered: 13151, approved: 2763},
+  {name: 'משק הראל בע"מ', ordered: 11042, approved: 1495},
+  {name: 'תפוז טרי בע"מ', ordered: 8833, approved: 0},
+  {name: 'טופ פרוט סוכנויות (2012) בע"מ', ordered: 6736, approved: 1111},
+  {name: 'א.ד.ש. שיווק דגי איכות בע"מ', ordered: 6516, approved: 0},
+  {name: 'נייטשר נט 2011 בע"מ', ordered: 2955, approved: 0},
+  {name: 'מר קייק-שיווק וסחר חומרי גלם לאפי', ordered: 2774, approved: 588},
+  {name: 'עלים ירוקים י.א.(2000) בע"מ', ordered: 2516, approved: 0},
+  {name: 'ד.א פרמיום קופי בע"מ Mae', ordered: 1850, approved: 1002},
+  {name: 'פפירוס מוצרי נייר (1966) בע"מ', ordered: 1338, approved: 0},
+  {name: 'טרס פזוס שיווק בע"מ', ordered: 1049, approved: 1048},
+  {name: 'צח שיווק-רישמי חדש', ordered: 1002, approved: 514},
+  {name: 'סבתאשלי תמצית מייפל', ordered: 900, approved: 0}
+];
+
+
+function togglePassword() {
+  const input = document.getElementById("codeInput");
+  if (input.type === "password") {
+    input.type = "text";
+  } else {
+    input.type = "password";
+  }
+}
 
 // Paywall
 function checkCode(){
