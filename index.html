@@ -212,8 +212,8 @@ const D = {
   labor_pct: 39.0,
   food_cost_gross: 89169, // All Orders
   food_cost_net: 89169,   // User Confirmed: Reports do NOT include VAT
-  food_cost_approved_gross: 14454, // Approved Invoices Only
-  food_cost_approved_net: 14454,   // User Confirmed: Reports do NOT include VAT
+  food_cost_approved_gross: 61000, // Accepted Supply (DocsList2)
+  food_cost_approved_net: 61000,   // User Confirmed: Reports do NOT include VAT
   last_updated: "2026-06-27",
   daily_sales: [
     {date:"2026-06-01",amount:17583},{date:"2026-06-02",amount:19910},
@@ -314,14 +314,27 @@ function render(){
   if(D.food_cost_gross > 0){
     const pctOrd = (D.food_cost_net / D.total_sales_net * 100).toFixed(1);
     const pctApp = (D.food_cost_approved_net / D.total_sales_net * 100).toFixed(1);
+    const gapAmt = D.food_cost_net - D.food_cost_approved_net;
+    const gapPct = (gapAmt / D.food_cost_net * 100).toFixed(1);
     
-    document.getElementById("k-food").innerHTML = `<div style="font-size:1.1rem">סה"כ הוזמן: ${fmt(D.food_cost_net)}</div><div style="font-size:1.1rem;color:var(--green);margin-top:4px">אושר: ${fmt(D.food_cost_approved_net)}</div>`;
-    document.getElementById("k-fpct").innerHTML = `הוזמן: ${pctOrd}% | אושר: <span style="color:var(--green)">${pctApp}%</span>`;
+    document.getElementById("k-food").innerHTML = `
+      <div style="font-size:1.1rem">הוזמן: ${fmt(D.food_cost_net)}</div>
+      <div style="font-size:1.1rem;color:var(--green);margin-top:2px">התקבל: ${fmt(D.food_cost_approved_net)}</div>
+      <div style="font-size:0.9rem;color:var(--orange);margin-top:4px;border-top:1px solid var(--border);padding-top:4px">פער ממתין: ${fmt(gapAmt)}</div>
+    `;
+    document.getElementById("k-fpct").innerHTML = `
+      <span style="color:var(--orange)">פער (Gap): ${gapPct}%</span> מההזמנות
+    `;
     
-    const prime = D.labor_pct + parseFloat(pctOrd);
-    document.getElementById("p-num").innerHTML = `<span style="color:${color(prime)}">${pc(prime)}</span>`;
+    const prime = D.labor_pct + parseFloat(pctApp); // Use ACCEPTED for Prime Cost reality
+    const primeOrd = D.labor_pct + parseFloat(pctOrd);
+    
+    document.getElementById("p-num").innerHTML = `
+      <span style="color:${color(prime)}">${pc(prime)}</span>
+      <div style="font-size:0.9rem;color:var(--muted);font-weight:normal;margin-top:2px">פוטנציאל לפי הזמנות: ${pc(primeOrd)}</div>
+    `;
     document.getElementById("p-bar").style.cssText = `width:${Math.min(prime,100)}%;background:${color(prime)}`;
-    document.getElementById("pb-f").textContent = pctOrd + "%";
+    document.getElementById("pb-f").textContent = pctApp + "%";
     document.getElementById("pb-f").style.color = "var(--accent)";
     document.getElementById("pb-t").textContent = pc(prime);
     document.getElementById("pb-t").style.color = color(prime);
