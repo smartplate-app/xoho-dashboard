@@ -218,7 +218,6 @@ function checkCode(){
     setTimeout(()=>document.getElementById("codeErr").textContent="",2000);
   }
 }
-}
 document.getElementById("codeInput").addEventListener("keydown",e=>{if(e.key==="Enter")checkCode();});
 if(localStorage.getItem("xoho_ok")==="1"){
   document.getElementById("paywall").style.display="none";
