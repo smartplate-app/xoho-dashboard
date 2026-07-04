@@ -15,7 +15,6 @@
   }
   body { font-family: 'Segoe UI', 'Arial Hebrew', sans-serif; background: var(--bg); color: var(--text); direction: rtl; }
 
-  /* PAYWALL */
   #paywall { position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000; }
   .paywall-box { background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:40px 48px;text-align:center;max-width:380px;width:90%; }
   .paywall-logo { font-size:2.2rem;font-weight:900;letter-spacing:-1px;margin-bottom:6px; }
@@ -27,23 +26,20 @@
   .paywall-btn:hover { opacity:0.85; }
   .paywall-err { color:var(--red);font-size:0.85rem;min-height:20px;margin-top:8px; }
 
-  /* HEADER */
   #main { display:none; }
   .header { background:var(--surface);border-bottom:1px solid var(--border);padding:16px 28px;display:flex;align-items:center;justify-content:space-between; }
   .logo { font-size:1.5rem;font-weight:900; }
   .logo span { color:var(--accent); }
   .header-meta { color:var(--muted);font-size:0.82rem;text-align:left;direction:ltr; }
 
-  /* TABS */
-  .tabs { display:flex;gap:4px;padding:16px 28px 0;border-bottom:1px solid var(--border);background:var(--surface); }
-  .tab { padding:9px 20px;border-radius:8px 8px 0 0;cursor:pointer;font-size:0.9rem;color:var(--muted);border:1px solid transparent;border-bottom:none;transition:all .2s; }
+  .tabs { display:flex;gap:4px;padding:16px 28px 0;border-bottom:1px solid var(--border);background:var(--surface); overflow-x: auto;}
+  .tab { padding:9px 20px;border-radius:8px 8px 0 0;cursor:pointer;font-size:0.9rem;color:var(--muted);border:1px solid transparent;border-bottom:none;transition:all .2s; white-space: nowrap;}
   .tab.active { background:var(--bg);color:var(--text);border-color:var(--border);font-weight:600; }
   .tab:hover:not(.active) { color:var(--text);background:rgba(255,255,255,.04); }
 
   .page { display:none;padding:28px; }
   .page.active { display:block; }
 
-  /* KPI */
   .kpi-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-bottom:24px; }
   .kpi { background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;position:relative;overflow:hidden; }
   .kpi::before { content:'';position:absolute;top:0;right:0;width:4px;height:100%;border-radius:0 12px 12px 0; }
@@ -56,7 +52,6 @@
   .kpi-value { font-size:1.85rem;font-weight:800;line-height:1;margin-bottom:4px; }
   .kpi-sub { font-size:0.8rem;color:var(--muted); }
 
-  /* PRIME */
   .prime-section { background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:24px; }
   .prime-title { font-size:0.82rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px; }
   .prime-number { font-size:3.2rem;font-weight:900;text-align:center;margin:6px 0 10px; }
@@ -68,45 +63,31 @@
   .prime-item-val { font-size:1.3rem;font-weight:700; }
   .prime-item-label { font-size:0.75rem;color:var(--muted);margin-top:2px; }
 
-  /* CHART */
   .chart-section { background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:24px; }
   .chart-title { font-size:0.9rem;font-weight:600;margin-bottom:16px; }
 
-  /* FOOD */
-  .food-note { background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.25);border-radius:10px;padding:14px 18px;font-size:0.85rem;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:10px; }
-  .food-input-section { background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:24px; }
-  .food-row { display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-top:14px; }
-  .food-field label { display:block;font-size:0.8rem;color:var(--muted);margin-bottom:5px; }
-  .food-field input { background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-size:1rem;width:200px;outline:none;direction:ltr; }
-  .food-field input:focus { border-color:var(--accent); }
-  .update-btn { background:var(--accent);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-weight:700;cursor:pointer;font-size:0.95rem; }
-  .update-btn:hover { opacity:.85; }
-  .last-upd { font-size:0.75rem;color:var(--muted);margin-top:6px; }
-
-  /* VENDOR TABLE */
   .vtable { width:100%;border-collapse:collapse; }
   .vtable th { text-align:right;padding:10px 14px;font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--border); }
   .vtable td { padding:11px 14px;font-size:0.88rem;border-bottom:1px solid rgba(46,51,71,.5); }
   .vtable tr:last-child td { border-bottom:none; }
   .vtable tr:hover td { background:rgba(255,255,255,.02); }
-  .bar-cell { display:flex;align-items:center;gap:8px; }
-  .bar-mini { height:6px;border-radius:3px;background:var(--accent);opacity:.7; }
 </style>
 </head>
 <body>
 
-<!-- PAYWALL -->
 <div id="paywall">
   <div class="paywall-box">
     <div class="paywall-logo">X<span>oho</span></div>
     <div class="paywall-sub">Dashboard · SmartPlate</div>
-    <div style="position:relative; width: 100%; max-width: 320px; margin: 0 auto; margin-bottom: 24px;"><input class="paywall-input" id="codeInput" type="password" placeholder="הזן קוד גישה" autocomplete="off" style="width: 100%; padding-left: 45px; box-sizing: border-box; margin-bottom: 0;"><button type="button" onclick="togglePassword()" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--muted); outline: none;">👁️</button></div>
+    <div style="position:relative; width: 100%; max-width: 320px; margin: 0 auto; margin-bottom: 24px;">
+      <input class="paywall-input" id="codeInput" type="password" placeholder="הזן קוד גישה" autocomplete="off" style="width: 100%; padding-left: 45px; box-sizing: border-box; margin-bottom: 0;">
+      <button type="button" onclick="togglePassword()" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--muted); outline: none;">👁️</button>
+    </div>
     <button class="paywall-btn" onclick="checkCode()">כניסה →</button>
     <div class="paywall-err" id="codeErr"></div>
   </div>
 </div>
 
-<!-- MAIN -->
 <div id="main">
   <div class="header">
     <div class="logo">X<span>oho</span> <span style="font-size:.95rem;font-weight:400;color:var(--muted)">Dashboard</span></div>
@@ -115,13 +96,12 @@
       <div id="hUpd"></div>
     </div>
   </div>
-  <div class="tabs">
-    <div class="tab active" onclick="showTab('mtd')">יוני 2026 — MTD</div>
-    <div class="tab" onclick="showTab('food')">עלות מזון (MarketMan)</div>
+  <div class="tabs" id="tabs-container">
+    <div class="tab active" id="tab-btn-jul" onclick="showMonth('jul')">יולי 2026 — MTD</div>
+    <div class="tab" id="tab-btn-jun" onclick="showMonth('jun')">יוני 2026</div>
   </div>
 
-  <!-- MTD -->
-  <div class="page active" id="tab-mtd">
+  <div class="page active" id="tab-content">
     <div class="kpi-grid">
       <div class="kpi blue">
         <div class="kpi-label">מכירות ברוטו</div>
@@ -164,135 +144,57 @@
       </div>
     </div>
 
-    <div class="chart-section">
-      <div class="chart-title">מכירות יומיות — יוני 2026</div>
+    <div class="chart-section" id="daily-chart-section">
+      <div class="chart-title">מכירות יומיות</div>
       <canvas id="dailyChart" height="75"></canvas>
-    </div>
-
-    <!-- HISTORICAL SALES COMPARISON -->
-    <div class="chart-section" style="margin-top: 24px;">
-      <div class="chart-title">השוואת מכירות רבעונית (מרץ - מאי) — 2024-2026</div>
-      <p style="color:var(--muted); font-size:0.85rem; margin-top:-10px; margin-bottom:16px;">
-        השוואת מכירות ברוטו (כולל מע"מ) ל-3 החודשים האחרונים המלאים מול השנים הקודמות.
-      </p>
-      
-      <div style="width:100%; max-height:250px; margin-bottom:24px;">
-        <canvas id="historyChart" height="75"></canvas>
-      </div>
-
-      <div style="overflow-x:auto;">
-        <table class="vtable">
-          <thead>
-            <tr>
-              <th>חודש</th>
-              <th style="text-align:left">2024</th>
-              <th style="text-align:left">2025</th>
-              <th style="text-align:left">2026</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><div style="font-weight:600">מרץ</div></td>
-              <td style="text-align:left">₪671,403</td>
-              <td style="text-align:left;color:var(--green)">₪886,004</td>
-              <td style="text-align:left;color:var(--orange)">₪363,411</td>
-            </tr>
-            <tr>
-              <td><div style="font-weight:600">אפריל</div></td>
-              <td style="text-align:left">₪471,753</td>
-              <td style="text-align:left;color:var(--green)">₪715,576</td>
-              <td style="text-align:left;color:var(--orange)">₪355,318</td>
-            </tr>
-            <tr>
-              <td><div style="font-weight:600">מאי</div></td>
-              <td style="text-align:left">₪734,816</td>
-              <td style="text-align:left;color:var(--green)">₪971,940</td>
-              <td style="text-align:left;color:var(--orange)">₪565,873</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- FOOD COST TAB -->
-  <div class="page" id="tab-food">
-    <div class="food-note">
-      <span>📦</span>
-      <div>עלות המזון נלקחת מ-MarketMan. הזן את הסכום הכולל מהדוח החודשי ואת פירוט הספקים (אופציונלי).</div>
-    </div>
-
-    <div class="food-input-section">
-      <div style="font-weight:600;font-size:1rem;margin-bottom:4px">עדכון עלות מזון חודשית</div>
-      <div class="last-upd" id="food-upd">לא עודכן עדיין</div>
-      <div class="food-row">
-        <div class="food-field">
-          <label>סה"כ ברוטו (₪) — MarketMan</label>
-          <input type="number" id="foodGross" placeholder="למשל: 85000" />
-        </div>
-        <button class="update-btn" onclick="updateFood()">✓ עדכן</button>
-      </div>
-      <div style="font-size:0.8rem;color:var(--muted);margin-top:10px">הסכומים ממערכת מרקטמן הם ללא מע"מ במקור (נטו) | % = נטו ÷ מכירות נטו</div>
-    </div>
-
-    <div class="chart-section">
-      <div class="chart-title">פירוט ספקים</div>
-      <table class="vtable">
-        <thead><tr><th>#</th><th>ספק</th><th style="text-align:left">ברוטו ₪</th><th style="text-align:left">% מסה"כ</th></tr></thead>
-        <tbody id="vbody"><tr><td colspan="4" style="text-align:center;color:var(--muted);padding:24px">הזן נתונים מ-MarketMan</td></tr></tbody>
-      </table>
     </div>
   </div>
 </div>
 
 <script>
 const CODES = ["XOHO2026","SMARTPLATE","xoho2026"];
-// Tabit + MarketMan data — synced 2026-06-29
-// Tabit + MarketMan data — synced 2026-07-04
-const D = {
-  total_sales_vat: 91040,
-  total_sales_net: 77153,
-  days_collected: 3,
-  labor_cost: 22079,
-  labor_hours: 406,
-  labor_pct: 28.6,
-  food_cost_gross: 0, 
-  food_cost_net: 0,   
-  food_cost_approved_gross: 0,
-  food_cost_approved_net: 0,
-  last_updated: "2026-07-04",
-  daily_sales: [{"date":"2026-07-01","amount":22450},{"date":"2026-07-02","amount":25041},{"date":"2026-07-03","amount":43549}]
+
+// AUTOMATION DATA PAYLOADS
+const DATA = {
+  "jul": {
+    "label": "יולי 2026 — MTD",
+    "total_sales_vat": 91040,
+    "days_collected": 3,
+    "labor_cost": 22079,
+    "labor_hours": 406,
+    "food_cost_approved_net": 0,
+    "food_cost_net": 0,
+    "last_updated": "2026-07-04",
+    "daily_sales": [{"date":"2026-07-01","amount":22450},{"date":"2026-07-02","amount":25041},{"date":"2026-07-03","amount":43549}]
+  },
+  "jun": {
+    "label": "יוני 2026",
+    "total_sales_vat": 587493,
+    "days_collected": 25,
+    "labor_cost": 190161,
+    "labor_hours": 3315,
+    "food_cost_approved_net": 61250,
+    "food_cost_net": 65120,
+    "last_updated": "2026-07-04",
+    "daily_sales": [{"date":"2026-06-01","amount":17583},{"date":"2026-06-02","amount":19910},{"date":"2026-06-03","amount":19454},{"date":"2026-06-04","amount":23792},{"date":"2026-06-05","amount":41572},{"date":"2026-06-07","amount":20796},{"date":"2026-06-08","amount":15138},{"date":"2026-06-09","amount":19932},{"date":"2026-06-10","amount":17726},{"date":"2026-06-11","amount":21675},{"date":"2026-06-14","amount":20074},{"date":"2026-06-15","amount":21021},{"date":"2026-06-16","amount":19469},{"date":"2026-06-17","amount":23251},{"date":"2026-06-18","amount":20612},{"date":"2026-06-19","amount":40659},{"date":"2026-06-21","amount":22772},{"date":"2026-06-22","amount":23456},{"date":"2026-06-23","amount":25624},{"date":"2026-06-24","amount":8866},{"date":"2026-06-25","amount":29711},{"date":"2026-06-26","amount":42683},{"date":"2026-06-28","amount":26206},{"date":"2026-06-29","amount":22447},{"date":"2026-06-30","amount":23064}]
+  }
 };
 
-
-
-
-let foodGross = D.food_cost_gross || parseFloat(localStorage.getItem("xoho_fg")||"0");
-let foodUpd = localStorage.getItem("xoho_fu")||null;
-
-let vendors = [];
-
+let currentMonth = 'jul';
+let chartInst = null;
 
 function togglePassword() {
   const input = document.getElementById("codeInput");
-  if (input.type === "password") {
-    input.type = "text";
-  } else {
-    input.type = "password";
-  }
+  input.type = input.type === "password" ? "text" : "password";
 }
 
-// Paywall
 function checkCode(){
-  const v=document.getElementById("codeInput").value.trim().toUpperCase();
-  // We use toUpperCase, so SMARTPLATE matches perfectly
-  // Let's explicitly check the value 
+  const v = document.getElementById("codeInput").value.trim().toUpperCase();
   if(v === "XOHO2026" || v === "SMARTPLATE" || v.replace(/\s/g, '') === "SMARTPLATE") {
     localStorage.setItem("xoho_ok","1");
     document.getElementById("paywall").style.display="none";
     document.getElementById("main").style.display="block";
-    render();
+    showMonth(currentMonth);
   } else {
     document.getElementById("codeErr").textContent="קוד שגוי";
     setTimeout(()=>document.getElementById("codeErr").textContent="",2000);
@@ -302,252 +204,98 @@ document.getElementById("codeInput").addEventListener("keydown",e=>{if(e.key==="
 if(localStorage.getItem("xoho_ok")==="1"){
   document.getElementById("paywall").style.display="none";
   document.getElementById("main").style.display="block";
-  setTimeout(render,50);
+  setTimeout(()=>showMonth(currentMonth), 50);
 }
 
-function showTab(id){
-  document.querySelectorAll(".tab").forEach((t,i)=>t.classList.toggle("active",["mtd","food"][i]===id));
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  document.getElementById("tab-"+id).classList.add("active");
+function showMonth(m){
+  currentMonth = m;
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  document.getElementById("tab-btn-"+m).classList.add("active");
+  render(DATA[m]);
 }
 
 function fmt(n){ return "₪"+Math.round(n).toLocaleString("he-IL"); }
 function pc(n){ return n.toFixed(1)+"%"; }
 function color(pct){ return pct<=60?"var(--green)":pct<=70?"var(--orange)":"var(--red)"; }
 
-function render(){
-  const foodNet = foodGross>0 ? Math.round(foodGross) : 0;
-  const foodPct = foodNet>0 ? Math.round(foodNet/D.total_sales_net*1000)/10 : 0;
-  const prime = D.labor_pct + foodPct;
+function render(d){
+  if(!d) return;
 
-  document.getElementById("hDate").innerHTML = "<strong>יולי 2026</strong> | עד 4.7";
-  document.getElementById("hUpd").textContent = "Tabit: " + D.last_updated;
-
-  document.getElementById("k-svat").textContent = fmt(D.total_sales_vat);
-  document.getElementById("k-days").textContent = D.days_collected+" ימי נתונים";
-  document.getElementById("k-snet").textContent = fmt(D.total_sales_net);
-  document.getElementById("k-labor").textContent = fmt(D.labor_cost);
-  document.getElementById("k-lpct").textContent = pc(D.labor_pct)+" ממכירות נטו";
-  document.getElementById("k-hours").textContent = Math.round(D.labor_hours).toLocaleString()+" ש'";
-
+  const salesNet = Math.round(d.total_sales_vat / 1.18);
+  const laborPct = salesNet > 0 ? (d.labor_cost / salesNet * 100) : 0;
   
-  if(D.food_cost_gross > 0){
-    const pctOrd = (D.food_cost_net / D.total_sales_net * 100).toFixed(1);
-    const pctApp = (D.food_cost_approved_net / D.total_sales_net * 100).toFixed(1);
-    const gapAmt = D.food_cost_net - D.food_cost_approved_net;
-    const gapPct = (gapAmt / D.food_cost_net * 100).toFixed(1);
+  // Try to use approved net, fallback to generic food cost
+  const foodNet = d.food_cost_approved_net || d.food_cost_net || 0;
+  const foodPct = salesNet > 0 ? (foodNet / salesNet * 100) : 0;
+  
+  const prime = laborPct + foodPct;
+
+  document.getElementById("hDate").innerHTML = "<strong>" + d.label + "</strong>";
+  document.getElementById("hUpd").textContent = "Tabit: " + (d.last_updated || "—");
+
+  document.getElementById("k-svat").textContent = fmt(d.total_sales_vat);
+  document.getElementById("k-days").textContent = d.days_collected+" ימי נתונים";
+  document.getElementById("k-snet").textContent = fmt(salesNet);
+  document.getElementById("k-labor").textContent = fmt(d.labor_cost);
+  document.getElementById("k-lpct").textContent = pc(laborPct)+" ממכירות נטו";
+  document.getElementById("k-hours").textContent = Math.round(d.labor_hours || 0).toLocaleString()+" ש'";
+
+  if(d.food_cost_net > 0){
+    const pctOrd = (d.food_cost_net / salesNet * 100).toFixed(1);
+    const pctApp = (d.food_cost_approved_net / salesNet * 100).toFixed(1);
+    const gapAmt = d.food_cost_net - d.food_cost_approved_net;
+    const gapPct = (gapAmt / d.food_cost_net * 100).toFixed(1);
     
     document.getElementById("k-food").innerHTML = `
-      <div style="font-size:1.1rem">הוזמן: ${fmt(D.food_cost_net)}</div>
-      <div style="font-size:1.1rem;color:var(--green);margin-top:2px">התקבל: ${fmt(D.food_cost_approved_net)}</div>
+      <div style="font-size:1.1rem">הוזמן: ${fmt(d.food_cost_net)}</div>
+      <div style="font-size:1.1rem;color:var(--green);margin-top:2px">התקבל: ${fmt(d.food_cost_approved_net)}</div>
       <div style="font-size:0.9rem;color:var(--orange);margin-top:4px;border-top:1px solid var(--border);padding-top:4px">פער ממתין: ${fmt(gapAmt)}</div>
     `;
     document.getElementById("k-fpct").innerHTML = `
       <span style="color:var(--orange)">פער (Gap): ${gapPct}%</span> מההזמנות
     `;
-    
-    const prime = D.labor_pct + parseFloat(pctApp); // Use ACCEPTED for Prime Cost reality
-    const primeOrd = D.labor_pct + parseFloat(pctOrd);
-    
-    document.getElementById("p-num").innerHTML = `
-      <span style="color:${color(prime)}">${pc(prime)}</span>
-      <div style="font-size:0.9rem;color:var(--muted);font-weight:normal;margin-top:2px">פוטנציאל לפי הזמנות: ${pc(primeOrd)}</div>
-    `;
-    document.getElementById("p-bar").style.cssText = `width:${Math.min(prime,100)}%;background:${color(prime)}`;
-    document.getElementById("pb-f").textContent = pctApp + "%";
-    document.getElementById("pb-f").style.color = "var(--accent)";
-    document.getElementById("pb-t").textContent = pc(prime);
-    document.getElementById("pb-t").style.color = color(prime);
   } else {
-    document.getElementById("k-food").textContent = "—";
-    document.getElementById("k-fpct").textContent = "עדכן ב-MarketMan tab";
-    document.getElementById("p-num").innerHTML = `<span style="color:var(--muted);font-size:1.4rem">ממתין לנתון מזון</span>`;
-    document.getElementById("pb-f").textContent = "—";
-    document.getElementById("pb-t").textContent = "—";
+    document.getElementById("k-food").textContent = fmt(0);
+    document.getElementById("k-fpct").textContent = "0%";
   }
-  document.getElementById("pb-l").textContent = pc(D.labor_pct);
-  document.getElementById("pb-l").style.color = "var(--orange)";
 
-  if(foodUpd) document.getElementById("food-upd").textContent = "עודכן: "+new Date(foodUpd).toLocaleString("he-IL");
-  if(foodGross>0) document.getElementById("foodGross").value = foodGross;
+  document.getElementById("p-num").textContent = pc(prime);
+  document.getElementById("p-num").style.color = color(prime);
+  document.getElementById("p-bar").style.width = Math.min(prime,100)+"%";
+  document.getElementById("p-bar").style.background = color(prime);
 
-  renderVendors();
-  renderChart();
-  renderHistoryChart();
-}
+  document.getElementById("pb-l").textContent = pc(laborPct);
+  document.getElementById("pb-f").textContent = pc(foodPct);
+  document.getElementById("pb-t").textContent = pc(prime);
 
-
-function renderHistoryChart() {
-  const ctx = document.getElementById("historyChart").getContext("2d");
-  
-  new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: ["מרץ", "אפריל", "מאי"],
-      datasets: [
-        {
-          label: "2024",
-          data: [671403, 471753, 734816],
-          backgroundColor: "rgba(100, 116, 139, 0.6)",
+  // CHART
+  if(d.daily_sales && d.daily_sales.length > 0){
+    document.getElementById("daily-chart-section").style.display="block";
+    const daily = d.daily_sales;
+    if(chartInst) chartInst.destroy();
+    chartInst = new Chart(document.getElementById("dailyChart"), {
+      type: "bar",
+      data: {
+        labels: daily.map(x=>x.date.substring(8,10)),
+        datasets: [{
+          label: "מכירות (ברוטו)",
+          data: daily.map(x=>x.amount),
+          backgroundColor: "#6366f1",
           borderRadius: 4
-        },
-        {
-          label: "2025",
-          data: [886004, 715576, 971940],
-          backgroundColor: "rgba(76, 175, 80, 0.7)", // Greenish for high
-          borderRadius: 4
-        },
-        {
-          label: "2026",
-          data: [363411, 355318, 565873],
-          backgroundColor: "rgba(245, 158, 11, 0.8)", // Orange for current drop
-          borderRadius: 4
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          display: true,
-          position: "top",
-          labels: { color: "#94a3b8", font: { family: "Heebo" } }
-        },
-        tooltip: {
-          titleFont: { family: "Heebo", size: 14 },
-          bodyFont: { family: "Heebo", size: 13 },
-          callbacks: {
-            label: function(ctx) {
-              return " " + ctx.dataset.label + ": ₪" + ctx.raw.toLocaleString();
-            }
-          }
-        }
+        }]
       },
-      scales: {
-        y: {
-          grid: { color: "rgba(255,255,255,0.05)" },
-          ticks: { 
-            color: "#94a3b8",
-            callback: function(value) { return "₪" + (value/1000) + "k"; }
-          }
-        },
-        x: {
-          grid: { display: false },
-          ticks: { color: "#94a3b8", font: { family: "Heebo" } }
+      options: {
+        responsive: true,
+        plugins: { legend: {display:false} },
+        scales: {
+          x: { grid: {display:false}, ticks: {color:"#8b93b0",font:{family:"'Segoe UI',sans-serif"}} },
+          y: { border: {display:false}, grid: {color:"#2e3347"}, ticks: {color:"#8b93b0",font:{family:"'Segoe UI',sans-serif"}} }
         }
       }
-    }
-  });
-}
-
-
-
-function renderVendors(){
-  const body = document.getElementById("vbody");
-  if(!vendors.length){
-    body.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px">אין פירוט ספקים</td></tr>';
-    return;
+    });
+  } else {
+    document.getElementById("daily-chart-section").style.display="none";
   }
-  
-  // Re-write the table headers
-  document.querySelector("#tab-food .vtable thead tr").innerHTML = '<th>#</th><th>ספק</th><th style="text-align:left">הוזמן (נטו)</th><th style="text-align:left">אושר (נטו)</th><th style="text-align:left">הפרש (נטו)</th><th style="text-align:left">% הפרש</th>';
-  
-  let h = "";
-  let totalOrd = 0;
-  let totalApp = 0;
-  
-  vendors.forEach((v,i)=>{
-    totalOrd += v.ordered;
-    totalApp += v.approved;
-    
-    const diff = v.ordered - v.approved;
-    const diffSpan = diff > 0 ? '<span style="color:var(--orange)">'+fmt(diff)+'</span>' : '<span style="color:var(--muted)">0</span>';
-    
-    let diffPct = 0;
-    if(v.ordered > 0) {
-      diffPct = (diff / v.ordered) * 100;
-    }
-    const pctSpan = diff > 0 ? '<span style="color:var(--orange)">'+diffPct.toFixed(1)+'%</span>' : '<span style="color:var(--muted)">0%</span>';
-
-    h += '<tr>';
-    h += '<td style="color:var(--muted)">'+(i+1)+'</td>';
-    h += '<td><div style="font-weight:600;margin-bottom:4px">'+v.name+'</div></td>';
-    h += '<td style="text-align:left">'+fmt(v.ordered)+'</td>';
-    h += '<td style="text-align:left;color:var(--green)">'+fmt(v.approved)+'</td>';
-    h += '<td style="text-align:left">'+diffSpan+'</td>';
-    h += '<td style="text-align:left">'+pctSpan+'</td>';
-    h += '</tr>';
-  });
-  
-  // ADD TOTAL ROW
-  const totalDiff = totalOrd - totalApp;
-  const totalDiffPct = totalOrd > 0 ? (totalDiff / totalOrd) * 100 : 0;
-  const totalDiffSpan = totalDiff > 0 ? '<span style="color:var(--orange)">'+fmt(totalDiff)+'</span>' : '<span style="color:var(--muted)">0</span>';
-  const totalPctSpan = totalDiff > 0 ? '<span style="color:var(--orange)">'+totalDiffPct.toFixed(1)+'%</span>' : '<span style="color:var(--muted)">0%</span>';
-
-  h += '<tr style="border-top:2px solid var(--border); background:rgba(255,255,255,0.03); font-weight:bold;">';
-  h += '<td></td>';
-  h += '<td>סה"כ (ללא מע"מ)</td>';
-  h += '<td style="text-align:left">'+fmt(totalOrd)+'</td>';
-  h += '<td style="text-align:left;color:var(--green)">'+fmt(totalApp)+'</td>';
-  h += '<td style="text-align:left">'+totalDiffSpan+'</td>';
-  h += '<td style="text-align:left">'+totalPctSpan+'</td>';
-  h += '</tr>';
-  
-  body.innerHTML = h;
-}
-
-let chartInst = null;
-function renderChart(){
-  const daily = D.daily_sales;
-  const labels = daily.map(d=>d.date.slice(8)+"/"+d.date.slice(5,7));
-  const vals = daily.map(d=>d.amount);
-  const avg = vals.reduce((a,b)=>a+b,0)/vals.length;
-  const ctx = document.getElementById("dailyChart").getContext("2d");
-  if(chartInst) chartInst.destroy();
-  chartInst = new Chart(ctx,{
-    type:"bar",
-    data:{
-      labels,
-      datasets:[{
-        data:vals,
-        backgroundColor:vals.map(v=>v>=35000?"rgba(167,139,250,0.85)":"rgba(99,102,241,0.6)"),
-        borderWidth:0,
-        borderRadius:4
-      },{
-        type:"line",
-        data:vals.map(()=>avg),
-        borderColor:"rgba(76,175,125,0.7)",
-        borderWidth:2,
-        borderDash:[5,4],
-        pointRadius:0,
-        fill:false
-      }]
-    },
-    options:{
-      responsive:true,
-      plugins:{
-        legend:{display:false},
-        tooltip:{callbacks:{label:c=>"₪"+Math.round(c.raw).toLocaleString("he-IL")}}
-      },
-      scales:{
-        x:{ticks:{color:"#8b93b0",font:{size:11}},grid:{color:"rgba(46,51,71,0.5)"}},
-        y:{ticks:{color:"#8b93b0",font:{size:11},callback:v=>"₪"+(v/1000).toFixed(0)+"K"},grid:{color:"rgba(46,51,71,0.5)"}}
-      }
-    }
-  });
-}
-
-function updateFood(){
-  const v = parseFloat(document.getElementById("foodGross").value);
-  if(!v||v<=0){alert("הזן סכום תקין");return;}
-  foodGross=v;
-  foodUpd=new Date().toISOString();
-  localStorage.setItem("xoho_fg",foodGross);
-  localStorage.setItem("xoho_fu",foodUpd);
-  render();
-  alert("✅ עלות מזון עודכנה!");
 }
 </script>
 </body>
