@@ -249,32 +249,20 @@
 <script>
 const CODES = ["XOHO2026","SMARTPLATE","xoho2026"];
 // Tabit + MarketMan data — synced 2026-06-29
+// Tabit + MarketMan data — synced 2026-07-04
 const D = {
-  total_sales_vat: 541982,
-  total_sales_net: 459307,
-  days_collected: 23,
-  labor_cost: 179130,
-  labor_hours: 2988,
-  labor_pct: 39.0,
-  food_cost_gross: 89169, 
-  food_cost_net: 89169,   
-  food_cost_approved_gross: 61017,
-  food_cost_approved_net: 61017,
-  last_updated: "2026-06-29",
-  daily_sales: [
-    {date:"2026-06-01",amount:17583},{date:"2026-06-02",amount:19910},
-    {date:"2026-06-03",amount:19454},{date:"2026-06-04",amount:23792},
-    {date:"2026-06-05",amount:41572},{date:"2026-06-07",amount:20796},
-    {date:"2026-06-08",amount:15138},{date:"2026-06-09",amount:19932},
-    {date:"2026-06-10",amount:17726},{date:"2026-06-11",amount:21675},
-    {date:"2026-06-14",amount:20074},{date:"2026-06-15",amount:21021},
-    {date:"2026-06-16",amount:19469},{date:"2026-06-17",amount:23251},
-    {date:"2026-06-18",amount:20612},{date:"2026-06-19",amount:40659},
-    {date:"2026-06-21",amount:22772},{date:"2026-06-22",amount:23456},
-    {date:"2026-06-23",amount:15292},{date:"2026-06-24",amount:20000},
-    {date:"2026-06-25",amount:25000},{date:"2026-06-26",amount:45000},
-    {date:"2026-06-28",amount:26206} // Just padding to 23 days for chart
-  ]
+  total_sales_vat: 91040,
+  total_sales_net: 77153,
+  days_collected: 3,
+  labor_cost: 22079,
+  labor_hours: 406,
+  labor_pct: 28.6,
+  food_cost_gross: 0, 
+  food_cost_net: 0,   
+  food_cost_approved_gross: 0,
+  food_cost_approved_net: 0,
+  last_updated: "2026-07-04",
+  daily_sales: [{"date":"2026-07-01","amount":22450},{"date":"2026-07-02","amount":25041},{"date":"2026-07-03","amount":43549}]
 };
 
 
@@ -283,9 +271,7 @@ const D = {
 let foodGross = D.food_cost_gross || parseFloat(localStorage.getItem("xoho_fg")||"0");
 let foodUpd = localStorage.getItem("xoho_fu")||null;
 
-let vendors = [
-{"name":"מחלבות גד ו/או רמי קשאני","amount":15164.4},{"name":"אחים כהן ד.א יבוא ושיווק מזון בע\"מ","amount":13581.359999999999},{"name":"בכור שיווק דגים בע\"מ","amount":10899.26},{"name":"משק הראל בע\"מ","amount":6032.02},{"name":"רול מרקט בע\"מ","amount":5225.42},{"name":"התרנגול שיווק ביצים בע\"מ","amount":3284.76},{"name":"קפטן אביחי","amount":2720},{"name":"פפירוס מוצרי נייר (1966) בע\"מ","amount":1338.14},{"name":"טרס פזוס שיווק בע\"מ","amount":1048.31},{"name":"חברת חנויות התה בע\"מ","amount":960},{"name":"צח שיווק-רישמי חדש","amount":763.56}
-];
+let vendors = [];
 
 
 function togglePassword() {
@@ -334,7 +320,7 @@ function render(){
   const foodPct = foodNet>0 ? Math.round(foodNet/D.total_sales_net*1000)/10 : 0;
   const prime = D.labor_pct + foodPct;
 
-  document.getElementById("hDate").innerHTML = "<strong>יוני 2026</strong> | עד 29.6";
+  document.getElementById("hDate").innerHTML = "<strong>יולי 2026</strong> | עד 4.7";
   document.getElementById("hUpd").textContent = "Tabit: " + D.last_updated;
 
   document.getElementById("k-svat").textContent = fmt(D.total_sales_vat);
