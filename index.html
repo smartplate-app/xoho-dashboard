@@ -105,7 +105,8 @@
     </div>
   </div>
   <div class="tabs" id="tabs-container">
-    <div class="tab active" id="tab-btn-jul" onclick="showMonth('jul')">יולי 2026 — MTD</div>
+    <div class="tab active" id="tab-btn-aug" onclick="showMonth('aug')">אוגוסט 2026 — MTD</div>
+    <div class="tab" id="tab-btn-jul" onclick="showMonth('jul')">יולי 2026</div>
     <div class="tab" id="tab-btn-jun" onclick="showMonth('jun')">יוני 2026</div>
   </div>
 
@@ -165,7 +166,7 @@ const CODES = ["XOHO2026","SMARTPLATE","xoho2026"];
 // AUTOMATION DATA PAYLOADS
 const DATA = {
   "jul": {
-    "label": "יולי 2026 — MTD",
+    "label": "יולי 2026",
     "total_sales_vat": 635022,
     "days_collected": 28,
     "labor_cost": 194487,
@@ -381,10 +382,74 @@ const DATA = {
         "amount": 23064
       }
     ]
+  },
+  "aug": {
+    "label": "אוגוסט 2026 — MTD",
+    "total_sales_vat": 285665,
+    "days_collected": 13,
+    "labor_cost": 82012,
+    "labor_hours": 1426,
+    "food_cost_approved_net": 0,
+    "food_cost_net": 0,
+    "last_updated": "2026-08-13T05:06:36.497531Z",
+    "daily_sales": [
+      {
+        "date": "2026-08-01",
+        "amount": 0
+      },
+      {
+        "date": "2026-08-02",
+        "amount": 24184
+      },
+      {
+        "date": "2026-08-03",
+        "amount": 23204
+      },
+      {
+        "date": "2026-08-04",
+        "amount": 29517
+      },
+      {
+        "date": "2026-08-05",
+        "amount": 29512
+      },
+      {
+        "date": "2026-08-06",
+        "amount": 28075
+      },
+      {
+        "date": "2026-08-07",
+        "amount": 40069
+      },
+      {
+        "date": "2026-08-08",
+        "amount": 0
+      },
+      {
+        "date": "2026-08-09",
+        "amount": 23579
+      },
+      {
+        "date": "2026-08-10",
+        "amount": 26253
+      },
+      {
+        "date": "2026-08-11",
+        "amount": 29703
+      },
+      {
+        "date": "2026-08-12",
+        "amount": 31569
+      },
+      {
+        "date": "2026-08-13",
+        "amount": 0
+      }
+    ]
   }
 };
 
-let currentMonth = 'jul';
+let currentMonth = 'aug';
 let chartInst = null;
 
 function togglePassword() {
